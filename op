@@ -1,0 +1,42 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Excel File Load
+df = pd.read_excel("sales_data.xlsx")
+
+# Basic Information
+print(df.head())
+print(df.info())
+
+# Total Sales
+total_sales = df['Sales'].sum()
+print("Total Sales:", total_sales)
+
+# Total Profit
+total_profit = df['Profit'].sum()
+print("Total Profit:", total_profit)
+
+# Top 10 Products
+top_products = df.groupby('Product')['Sales'].sum().sort_values(ascending=False)
+
+print(top_products.head(10))
+
+# Monthly Sales
+df['Date'] = pd.to_datetime(df['Date'])
+df['Month'] = df['Date'].dt.month
+
+monthly_sales = df.groupby('Month')['Sales'].sum()
+
+# Plot Monthly Sales
+monthly_sales.plot(kind='line', marker='o')
+plt.title('Monthly Sales Trend')
+plt.xlabel('Month')
+plt.ylabel('Sales')
+plt.show()
+
+# City Wise Sales
+city_sales = df.groupby('City')['Sales'].sum()
+
+city_sales.plot(kind='bar')
+plt.title('City Wise Sales')
+plt.show()
